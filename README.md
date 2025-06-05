@@ -45,26 +45,36 @@ A beautiful, feature-rich Pomodoro timer web application optimized for Raspberry
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/pomodoro-pi.git
+git clone https://github.com/david-engel-05/pomodoro-pi.git
 cd pomodoro-pi
 ```
 
-### 2. Configure Environment
+### 2. One-Click Deployment (Recommended)
 ```bash
-cp .env.example .env
-# Edit .env with your Supabase credentials (optional for local-only use)
+# Make deployment script executable and run
+chmod +x deploy-raspberry-pi.sh
+./deploy-raspberry-pi.sh
 ```
 
-### 3. Build and Run
+### 3. Manual Deployment
 ```bash
-# Build and start the application
+# Configure environment
+cp .env.example .env
+# Edit .env with your Supabase credentials (optional for local-only use)
+
+# Pull and run pre-built image from GitHub Container Registry
+docker-compose -f docker-compose.prod.yml up -d
+
+# Or build locally
 docker-compose up -d
+```
 
-# View logs
-docker-compose logs -f pomodoro-pi
-
-# Stop the application
-docker-compose down
+### 4. Development Mode
+```bash
+# For development with hot reload
+docker-compose up -d
+# or
+npm install && npm run dev
 ```
 
 The application will be available at `http://localhost:3000` or `http://your-pi-ip:3000`.
@@ -193,6 +203,32 @@ Create custom categories for better organization:
 - **Docker**: Containerized deployment
 - **PWA**: Progressive Web App with service worker
 - **Service Worker**: Offline support and background sync
+
+## 🐳 Docker Images
+
+### Pre-built Images
+Docker images are automatically built and published to GitHub Container Registry:
+
+```bash
+# Pull latest image
+docker pull ghcr.io/david-engel-05/pomodoro-pi:latest
+
+# Run with Docker
+docker run -p 3000:3000 ghcr.io/david-engel-05/pomodoro-pi:latest
+
+# Use in docker-compose
+# See docker-compose.prod.yml for production deployment
+```
+
+### Available Tags
+- `latest` - Latest stable release
+- `main` - Latest development build
+- `v1.0.0` - Specific version releases
+
+### Multi-Architecture Support
+Images are built for multiple architectures:
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64/Raspberry Pi 4+)
 
 ## 📊 API Endpoints
 
