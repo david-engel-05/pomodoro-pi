@@ -5,6 +5,7 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import usePomodoro from '@/hooks/usePomodoro'
 import useNotifications from '@/hooks/useNotifications'
+import ConnectionStatus from '@/components/ConnectionStatus/ConnectionStatus'
 
 export default function Settings() {
   const { settings, updateSettings, loading } = usePomodoro()
@@ -65,6 +66,9 @@ export default function Settings() {
       {/* Settings Content */}
       <main className="px-4 sm:px-6 pb-8">
         <div className="max-w-4xl mx-auto space-y-6">
+          
+          {/* Connection Status */}
+          <ConnectionStatus showDetails />
           
           {/* Timer Settings */}
           <div className="card p-6">

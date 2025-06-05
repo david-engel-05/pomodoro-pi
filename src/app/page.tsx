@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase'
 import Timer from '@/components/Timer/Timer'
 import CategorySelector from '@/components/CategorySelector/CategorySelector'
 import SystemMonitor from '@/components/SystemMonitor/SystemMonitor'
+import ConnectionStatus from '@/components/ConnectionStatus/ConnectionStatus'
 import usePomodoro from '@/hooks/usePomodoro'
 import useNotifications from '@/hooks/useNotifications'
 
@@ -52,6 +53,9 @@ export default function Home() {
           </h1>
           
           <div className="flex items-center space-x-4">
+            {/* Connection Status */}
+            <ConnectionStatus compact />
+            
             {/* Notification permission */}
             {!granted && permission !== 'denied' && (
               <button
