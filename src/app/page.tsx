@@ -1,7 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { Cog6ToothIcon, ChartBarIcon } from '@heroicons/react/24/outline'
+import { useState, useEffect } from 'react'
+import { Cog6ToothIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 import Timer from '@/components/Timer/Timer'
 import CategorySelector from '@/components/CategorySelector/CategorySelector'
 import SystemMonitor from '@/components/SystemMonitor/SystemMonitor'
@@ -10,8 +12,23 @@ import useNotifications from '@/hooks/useNotifications'
 
 export default function Home() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>()
+  const [user, setUser] = useState<any>(null)
   const { settings, saveSession, loading, error } = usePomodoro()
   const { permission, requestPermission, granted } = useNotifications()
+
+  useEffect(() => {
+    // Get current user
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+    })
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
 
   const handleSessionComplete = async (mode: 'work' | 'short_break' | 'long_break', duration: number) => {
     await saveSession(mode, duration, selectedCategoryId)
@@ -45,14 +62,24 @@ export default function Home() {
               </button>
             )}
             
+            {/* User Status */}
+            {user && (
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                👋 {user.email}
+              </div>
+            )}
+            
             {/* Navigation */}
             <nav className="flex items-center space-x-2">
-              <button className="p-2 rounded-lg hover:bg-white/20 transition-colors">
+              <Link href="/statistics" className="p-2 rounded-lg hover:bg-white/20 transition-colors">
                 <ChartBarIcon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              </button>
-              <button className="p-2 rounded-lg hover:bg-white/20 transition-colors">
+              </Link>
+              <Link href="/settings" className="p-2 rounded-lg hover:bg-white/20 transition-colors">
                 <Cog6ToothIcon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              </button>
+              </Link>
+              <Link href="/auth" className="p-2 rounded-lg hover:bg-white/20 transition-colors">
+                <UserIcon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              </Link>
             </nav>
           </div>
         </div>
