@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const systemInfo = {
       cpu: {
-        usage: cpuLoad.currentload || 0,
+        usage: cpuLoad.currentLoad || 0,
         temperature,
       },
       memory: {

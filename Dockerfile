@@ -44,9 +44,6 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Install systeminformation for system monitoring
-# This is needed for the system monitor API
-RUN npm install systeminformation@5.21.15
 
 USER nextjs
 

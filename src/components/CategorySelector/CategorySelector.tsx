@@ -74,12 +74,12 @@ export default function CategorySelector({
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
-      const newCategory = {
+      const newCategory: Category = {
         id: `custom_${Date.now()}`,
         name,
         color,
         icon,
-        user_id: user?.id || null,
+        user_id: user?.id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       }
